@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Game Dev\\LikeLion Unity Bootcamp\\C# Projects\\Console-Survivor\\console-survivor\\",
+  "WorkspaceRootPath": "D:\\Game Dev\\LikeLion Unity Bootcamp\\Projects\\C#\\Console-Survivor\\console-survivor\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6FFCB070-6557-4FB9-AAF4-657DE0821758}|console-survivor\\console-survivor.csproj|d:\\game dev\\likelion unity bootcamp\\c# projects\\console-survivor\\console-survivor\\console-survivor\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6FFCB070-6557-4FB9-AAF4-657DE0821758}|console-survivor\\console-survivor.csproj|d:\\game dev\\likelion unity bootcamp\\projects\\c#\\console-survivor\\console-survivor\\console-survivor\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6FFCB070-6557-4FB9-AAF4-657DE0821758}|console-survivor\\console-survivor.csproj|solutionrelative:console-survivor\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Game Dev\\LikeLion Unity Bootcamp\\C# Projects\\Console-Survivor\\console-survivor\\console-survivor\\Program.cs",
+              "DocumentMoniker": "D:\\Game Dev\\LikeLion Unity Bootcamp\\Projects\\C#\\Console-Survivor\\console-survivor\\console-survivor\\Program.cs",
               "RelativeDocumentMoniker": "console-survivor\\Program.cs",
-              "ToolTip": "D:\\Game Dev\\LikeLion Unity Bootcamp\\C# Projects\\Console-Survivor\\console-survivor\\console-survivor\\Program.cs",
+              "ToolTip": "D:\\Game Dev\\LikeLion Unity Bootcamp\\Projects\\C#\\Console-Survivor\\console-survivor\\console-survivor\\Program.cs",
               "RelativeToolTip": "console-survivor\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-01T13:20:59.988Z",
               "EditorCaption": ""
