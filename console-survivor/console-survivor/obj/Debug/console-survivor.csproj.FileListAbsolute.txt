@@ -1,0 +1,7 @@
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\bin\Debug\console-survivor.exe.config
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\bin\Debug\console-survivor.exe
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\bin\Debug\console-survivor.pdb
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\obj\Debug\console-survivor.csproj.AssemblyReference.cache
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\obj\Debug\console-survivor.csproj.CoreCompileInputs.cache
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\obj\Debug\console-survivor.exe
+D:\Game Dev\LikeLion Unity Bootcamp\C# Projects\Console-Survivor\console-survivor\console-survivor\obj\Debug\console-survivor.pdb
