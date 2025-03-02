@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleSurvivor
 {
+    // title screen class
     public class TitleScreen
     {
         public void GameTitle()
@@ -52,29 +54,54 @@ namespace ConsoleSurvivor
             // start button
             bool showBtn = true;
 
-            while (true)
+            while (!Console.KeyAvailable)
             {
-                if (!Console.KeyAvailable)
+                Console.SetCursorPosition(54, 22);
+                if (showBtn)
                 {
-                    Console.SetCursorPosition(54, 22);
-                    if (showBtn)
-                    {
-                        Console.Write("PRESS ANY BUTTON\n\n\n");
-                    }
-                    else
-                    {
-                        Console.Write("                      ");
-                    }
-                    showBtn = !showBtn;
-                    Thread.Sleep(700);
+                    Console.Write("PRESS ANY BUTTON\n\n\n");
                 }
                 else
                 {
-                    Console.Clear();
+                    Console.Write("                      ");
                 }
+                showBtn = !showBtn;
+                Thread.Sleep(700);
+            }
+            Console.ReadKey(true);
+            Console.Clear();
+        }
+    }
+
+
+    // main screen class
+    public class Player
+    {
+        public int playerX;
+        public int playerY;
+
+        public Player()
+        {
+            playerX = 60;
+            playerY = 38;
+        }
+
+        public void CreatePlayer()
+        {
+            string[] player = new string[]
+            {
+                " ∧＿∧ ",
+                "(・ω・)"
+            };
+
+            for (int i = 0; i < player.Length; i++)
+            {
+                Console.SetCursorPosition(playerX, playerY + i);
+                Console.WriteLine(player[i]);
             }
         }
     }
+
 
     class Program
     {
@@ -89,10 +116,14 @@ namespace ConsoleSurvivor
 
             TitleScreen titleScreen = new TitleScreen();
             titleScreen.GameTitle();
+            Console.Clear();
+
+            Player player = new Player();
+            player.CreatePlayer();
+            
+            
 
             Console.ReadKey(true); // hide extra message
-
-            Console.Clear();
         }
     }
 }
