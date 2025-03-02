@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 
 namespace ConsoleSurvivor
 {
@@ -46,7 +45,7 @@ namespace ConsoleSurvivor
             Console.SetCursorPosition(10, 16);
             Console.Write("┃                                                                 ┃");
             Console.SetCursorPosition(10, 17);
-            Console.Write("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+            Console.Write("┛━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
             // copyright name
             Console.SetCursorPosition(27, 24);
@@ -73,8 +72,14 @@ namespace ConsoleSurvivor
         }
     }
 
+    public class Shoot
+    {
+        public int x;
+        public int y;
+        public bool fire;
+    }
 
-    // main screen class
+    // player class
     public class Player
     {
         [DllImport("msvcrt.dll")]
@@ -82,17 +87,19 @@ namespace ConsoleSurvivor
 
         public int playerX;
         public int playerY;
-        public int score = 0;
+        public int time = 20; // Timer starts at 20
+        private int lastTimerUpdate;
 
         public Player()
         {
             playerX = 40;
             playerY = 12;
+            lastTimerUpdate = Environment.TickCount;
         }
 
         public void PlayerMain()
         {
-            ScoreUI(); // player score
+            TimerUI(); // player score
             PlayerCreate(); // player creation
             PlayerKey(); // player movement
         }
@@ -127,19 +134,17 @@ namespace ConsoleSurvivor
 
                 switch (playerKey)
                 {
-                    case 72:  // up 아스키코드                    
+                    case 72:  // up
                         playerY--;
                         if (playerY < 1)
                             playerY = 1;
                         break;
-                    case 75:
-                        // left 화살표키
+                    case 75: // left
                         playerX--;
                         if (playerX < 0)
                             playerX = 0;
                         break;
-                    case 77:
-                        // right
+                    case 77: // right
                         playerX++;
                         if (playerX > 75)
                             playerX = 75;
@@ -153,16 +158,26 @@ namespace ConsoleSurvivor
             }
         }
 
-        public void ScoreUI()
+        public void TimerUI()
         {
             Console.SetCursorPosition(63, 0);
             Console.Write("┏━━━━━━━━━━━━━━┓");
             Console.SetCursorPosition(63, 1);
             Console.Write("┃              ┃");
             Console.SetCursorPosition(65, 1);
-            Console.Write("Score : " + score);
+            Console.Write("Time : " + time);
             Console.SetCursorPosition(63, 2);
             Console.Write("┗━━━━━━━━━━━━━━┛");
+        }
+
+        public void UpdateTimer()
+        {
+            // Decrease the timer every second
+            if (time > 0 && Environment.TickCount - lastTimerUpdate >= 1000)
+            {
+                time--;
+                lastTimerUpdate = Environment.TickCount; // Update last timer update time
+            }
         }
     }
 
@@ -170,33 +185,57 @@ namespace ConsoleSurvivor
     {
         public int enemyX;
         public int enemyY;
+        Random rand = new Random();
 
+        // Constructor now calls RandomSpawn() to initialize the enemy's random position
         public Enemy()
         {
-            enemyX = 77;
-            enemyY = 10;
+            RandomSpawn();  // Randomly spawn the enemy when initialized
         }
 
+        // Method to spawn enemy at a random edge
+        public void RandomSpawn()
+        {
+            int spawn = rand.Next(0, 4);  // Randomly choose one of the edges (top, right, bottom, left)
+
+            switch (spawn)
+            {
+                case 0: // Top edge (random X, Y = 0)
+                    enemyX = rand.Next(0, 80); // Random X on top edge
+                    enemyY = 0;
+                    break;
+                case 1: // Right edge (X = 79, random Y)
+                    enemyX = 79;
+                    enemyY = rand.Next(0, 25); // Random Y on right edge
+                    break;
+                case 2: // Bottom edge (random X, Y = 24)
+                    enemyX = rand.Next(0, 80); // Random X on bottom edge
+                    enemyY = 24;
+                    break;
+                case 3: // Left edge (X = 0, random Y)
+                    enemyX = 0;
+                    enemyY = rand.Next(0, 25); // Random Y on left edge
+                    break;
+            }
+        }
+
+        // Method to draw the enemy
         public void EnemyCreate()
         {
-            string enemy = "( U ₩ U )";
+            string enemy = "(UwU)";
             Console.SetCursorPosition(enemyX, enemyY);
             Console.Write(enemy);
         }
 
-        public void EnemyMove()
+        // Method to make the enemy move towards the player
+        public void EnemyMove(int playerX, int playerY)
         {
-            Random rand = new Random();
-            enemyX--;
-
-            if (enemyX < 2) //화면 왼쪽넘어가면 새로 좌표잡아라
-            {
-                enemyX = 75; //좌표 77
-                enemyY = rand.Next(2, 22); //2~21 
-            }
+            if (enemyX < playerX) enemyX++;   // Move right
+            if (enemyX > playerX) enemyX--;   // Move left
+            if (enemyY < playerY) enemyY++;   // Move down
+            if (enemyY > playerY) enemyY--;   // Move up
         }
     }
-
 
     class Program
     {
@@ -212,11 +251,13 @@ namespace ConsoleSurvivor
             Console.Clear();
 
             Player player = new Player();
-            Enemy enemy = new Enemy();
+            List<Enemy> enemies = new List<Enemy>(); // List to store multiple enemies
 
             int dwTime = Environment.TickCount;
+            int lastSpawnTime = Environment.TickCount; // Track enemy spawn time
+            int enemyMoveCounter = 0; // Counter to slow down enemy movement
 
-            while (true) //무한반복
+            while (true) // Infinite game loop
             {
                 if (dwTime + 50 < Environment.TickCount)
                 {
@@ -224,14 +265,51 @@ namespace ConsoleSurvivor
                     Console.Clear();
 
                     player.PlayerMain();
-                    enemy.EnemyCreate();
-                    enemy.EnemyMove();
+                    player.UpdateTimer(); // Update the timer
+
+                    // If time runs out, clear the screen and show "YOU WIN!"
+                    if (player.time == 0)
+                    {
+                        Console.Clear();
+                        Console.SetCursorPosition(35, 7);
+                        Console.Write("┏━━━━━━━━━━━━━━┓");
+                        Console.SetCursorPosition(35, 8);
+                        Console.Write("┃              ┃");
+                        Console.SetCursorPosition(39, 8);
+                        Console.Write("YOU WIN!");
+                        Console.SetCursorPosition(35, 9);
+                        Console.Write("┗━━━━━━━━━━━━━━┛");
+                        Console.ReadKey();
+                        return; // Exit the game loop
+                    }
+
+                    // Spawn a new enemy every 3 seconds
+                    if (Environment.TickCount - lastSpawnTime >= 3000)
+                    {
+                        enemies.Add(new Enemy());
+                        lastSpawnTime = Environment.TickCount;
+                    }
+
+                    // Move enemies every 2 frames to slow them down
+                    enemyMoveCounter++;
+                    foreach (Enemy e in enemies)
+                    {
+                        e.EnemyCreate();
+                        if (enemyMoveCounter % 8 == 0) // Move every 2 cycles
+                        {
+                            e.EnemyMove(player.playerX, player.playerY);
+                        }
+                    }
                 }
             }
-            Console.ReadKey(true); // hide extra message
         }
     }
 }
+
+
+
+
+
 
 /*
 using System;
